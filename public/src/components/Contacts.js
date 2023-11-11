@@ -27,7 +27,7 @@ export default function Contacts({ contacts, changeChat }) {
         <Container>
           <div className="brand">
             <img src={Logo} alt="logo" />
-            <h3>snappy</h3>
+            <h3>ChitChat</h3>
           </div>
           <div className="contacts">
             {contacts.map((contact, index) => {
@@ -123,7 +123,7 @@ const Container = styled.div`
       }
     }
     .selected {
-      background-color: #ffa2b6;
+      background-color: #efb11d;
     }
   }
 
