@@ -6,7 +6,7 @@ export default function Welcome({ currentUser }) {
     <Container>
       <img src={Hello} alt="hello" />
       <h1>
-        Welcome, <span>{currentUser.username}!</span>
+        Welcome, <span>{currentUser && currentUser.username}!</span>
       </h1>
       <h3>Please select a chat to Start messaging.</h3>
     </Container>
