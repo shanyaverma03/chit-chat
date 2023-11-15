@@ -5,6 +5,7 @@ const {
 const router = require("express").Router();
 
 router.post("/addmsg/", addMessage);
-router.post("/getmsgs/", getMessages);
+
+router.get("/getmsgs/", getMessages);
 
 module.exports = router;

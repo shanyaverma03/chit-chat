@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
 import Logout from "./Logout";
 import ChatInput from "./ChatInput";
-import { sendMessageRoute } from "../utils/APIRoutes";
+import { sendMessageRoute, getAllMessagesRoute } from "../utils/APIRoutes";
 
 export default function ChatContainer({ currentChat, currentUser }) {
+  const [messages, setMessages] = useState([]);
+
+  const getAllMessages = async () => {
+    try {
+      const response = await axios.get(getAllMessagesRoute, {
+        params: {
+          from: currentUser._id,
+          to: currentChat._id,
+        },
+      });
+      console.log(response);
+      setMessages(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllMessages();
+  }, [currentChat, messages]);
+
   const msgSendHandler = async (msg) => {
     try {
       await axios.post(sendMessageRoute, {
@@ -17,8 +38,6 @@ export default function ChatContainer({ currentChat, currentUser }) {
     } catch (err) {
       console.log(err);
     }
-
-    alert(msg);
   };
 
   return (
@@ -39,7 +58,24 @@ export default function ChatContainer({ currentChat, currentUser }) {
             </div>
             <Logout />
           </div>
-          <div className="chat-messages"></div>
+          <div className="chat-messages">
+            {messages.map((message) => {
+              return (
+                <div>
+                  <div
+                    className={`message ${
+                      message.fromSelf ? "sent" : "received"
+                    }`}
+                  >
+                    <div className="content">
+                      <p>{message.message}</p>
+                      <p>{message.fromSelf}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
           <ChatInput handleSendMsg={msgSendHandler} />
         </Container>
       )}
@@ -105,16 +141,18 @@ const Container = styled.div`
         }
       }
     }
-    .sended {
+    .sent {
       justify-content: flex-end;
       .content {
-        background-color: #4f04ff21;
+        color: white;
+        background-color: #d6536d;
       }
     }
-    .recieved {
+    .received {
       justify-content: flex-start;
       .content {
-        background-color: #9900ff20;
+        color: black;
+        background-color: #ebe9e1;
       }
     }
   }
